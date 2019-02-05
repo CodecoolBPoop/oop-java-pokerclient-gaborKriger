@@ -26,8 +26,8 @@ class CardTest {
 
     @Test
     void testConstructorBadValueSecondCase() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            new Card("sy");
+        assertThrows(NumberFormatException.class, () -> {
+            new Card("si");
             System.out.println("Test : Failure");
         });
         System.out.println("Test : Passed (testConstructorBadValueSecondCase)");

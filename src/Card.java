@@ -11,29 +11,14 @@ public class Card {
         put("A", 14);
     }};
 
-    public Card(String cardCode) throws IllegalArgumentException {
+    public Card(String cardCode) {
         this.cardCode = cardCode;
-        validateCardCode(cardCode);
+        validateCardCode();
     }
 
-    private void validateCardCode(String cardCode) {
+    private void validateCardCode() {
         checkCardColorIsValid();
-        checkCardNumberIsValid(cardCode);
-    }
-
-    private void checkCardNumberIsValid(String cardCode) {
-        String cardValue = cardCode.substring(1).toUpperCase();
-        int intCardValue;
-        if (alphabeticCardValue.get(cardCode.substring(1).toUpperCase()) == null) {
-            // raises exception if cardValue is a letter, but not J/Q/K/A
-            intCardValue = Integer.parseInt(cardValue);
-            if (intCardValue > 10) {
-                throw new IllegalArgumentException("card number isn't valid: " + intCardValue);
-            }
-            if (intCardValue < 2) {
-                throw new IllegalArgumentException("card number isn't valid: " + intCardValue);
-            }
-        }
+        checkCardNumberIsValid();
     }
 
     private void checkCardColorIsValid() {
@@ -44,8 +29,23 @@ public class Card {
         }
     }
 
+    private void checkCardNumberIsValid() {
+        String cardValue = this.cardCode.substring(1).toUpperCase();
+        // raises exception if cardValue is a letter, but not J/Q/K/A
+        if (alphabeticCardValue.get(cardValue) == null) {
+            try {
+                int intCardValue = Integer.parseInt(cardValue);
+                if (intCardValue < 2 || intCardValue > 10) {
+                    throw new IllegalArgumentException("card number isn't valid: " + intCardValue);
+                }
+            } catch (NumberFormatException nfe) {
+                throw new NumberFormatException("card number isn't number: " + nfe);
+            }
+        }
+    }
+
     public int getValue() {
-        String cardValue = cardCode.substring(1).toUpperCase();
+        String cardValue = this.cardCode.substring(1).toUpperCase();
         int intCardValue;
         if (alphabeticCardValue.get(cardValue) == null) {
             intCardValue = Integer.parseInt(cardValue);
