@@ -1,10 +1,10 @@
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class PokerClient {
 
-    private List<Card> myCards = new ArrayList<>();
-    private List<Card> otherCards = new ArrayList<>();
+    private List<Card> myCards = new LinkedList<>();
+    private List<Card> otherCards = new LinkedList<>();
 
     public PokerClient(String p1, String p2, String p3, String p4, String p5) {
         myCards.add(new Card(p1.toUpperCase()));
