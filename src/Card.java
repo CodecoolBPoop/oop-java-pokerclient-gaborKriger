@@ -1,31 +1,29 @@
 import java.util.HashMap;
+import java.util.Map;
 
 public class Card {
 
-    String cardCode;
+    private String cardCode;
+    private Map<String, Integer> alphabeticCardValue = new HashMap<String, Integer>() {{
+        put("J", 11);
+        put("Q", 12);
+        put("K", 13);
+        put("A", 14);
+    }};
 
     public Card(String cardCode) throws IllegalArgumentException {
         this.cardCode = cardCode;
+        validateCardCode(cardCode);
+    }
 
-        String cardColor = this.cardCode.substring(0, 1).toUpperCase();
+    private void validateCardCode(String cardCode) {
+        checkCardColorIsValid();
+        checkCardNumberIsValid(cardCode);
+    }
 
-        if (!cardColor.contentEquals("S") &&
-            !cardColor.contentEquals("C") &&
-            !cardColor.contentEquals("D") &&
-            !cardColor.contentEquals("H"))
-        {
-            throw new IllegalArgumentException("card color isn't valid: " + cardColor);
-        }
-
+    private void checkCardNumberIsValid(String cardCode) {
         String cardValue = cardCode.substring(1).toUpperCase();
-        Integer intCardValue;
-
-        HashMap<String, Integer> alphabeticCardValue = new HashMap<>();
-        alphabeticCardValue.put("J", 11);
-        alphabeticCardValue.put("Q", 12);
-        alphabeticCardValue.put("K", 13);
-        alphabeticCardValue.put("A", 14);
-
+        int intCardValue;
         if (alphabeticCardValue.get(cardCode.substring(1).toUpperCase()) == null) {
             // raises exception if cardValue is a letter, but not J/Q/K/A
             intCardValue = Integer.parseInt(cardValue);
@@ -35,26 +33,25 @@ public class Card {
             if (intCardValue < 2) {
                 throw new IllegalArgumentException("card number isn't valid: " + intCardValue);
             }
+        }
+    }
 
+    private void checkCardColorIsValid() {
+        String cardColor = this.cardCode.substring(0, 1).toUpperCase();
+        String acceptedColor = "SCDH";
+        if (!acceptedColor.contains(cardColor)) {
+            throw new IllegalArgumentException("card color isn't valid: " + cardColor);
         }
     }
 
     public int getValue() {
-        HashMap<String, Integer> alphabeticCardValue = new HashMap<>();
-        alphabeticCardValue.put("J", 11);
-        alphabeticCardValue.put("Q", 12);
-        alphabeticCardValue.put("K", 13);
-        alphabeticCardValue.put("A", 14);
-
         String cardValue = cardCode.substring(1).toUpperCase();
-        Integer intCardValue;
-
-        if (alphabeticCardValue.get(cardCode.substring(1).toUpperCase()) == null) {
+        int intCardValue;
+        if (alphabeticCardValue.get(cardValue) == null) {
             intCardValue = Integer.parseInt(cardValue);
         } else {
-            intCardValue = alphabeticCardValue.get(cardCode.substring(1).toUpperCase());
+            intCardValue = alphabeticCardValue.get(cardValue);
         }
-
         return intCardValue;
     }
 }
